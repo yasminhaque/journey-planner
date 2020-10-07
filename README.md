@@ -10,3 +10,7 @@ To run the application, we run the following in command line:
 
 `./manage.py flask run`
 
+To run the application in docker:
+
+`./manage.py compose up`
+
