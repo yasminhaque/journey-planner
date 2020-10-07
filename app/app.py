@@ -13,4 +13,4 @@ def create_app(config_name: str):
     def hello_world():
         return "Hello, World!"
 
-    return appA
+    return app
