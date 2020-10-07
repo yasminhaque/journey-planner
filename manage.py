@@ -6,6 +6,9 @@ import signal
 import subprocess
 import click
 
+docker_compose_file = "docker-compose.yaml"
+docker_compose_cmdline = ["docker-compose", "-f", docker_compose_file]
+
 
 # Ensure an environment variable exists and has a value
 def setenv(variable: str, default: str):
@@ -44,7 +47,18 @@ def flask(subcommand):
         p.wait()
 
 
-cli.add_command(flask)
+@cli.command(context_settings={"ignore_unknown_options": True})
+@click.argument("subcommand", nargs=-1, type=click.Path())
+def compose(subcommand):
+    cmdline = docker_compose_cmdline + list(subcommand)
+
+    try:
+        p = subprocess.Popen(cmdline)
+        p.wait()
+    except KeyboardInterrupt:
+        p.send_signal(signal.SIGINT)
+        p.wait()
+
 
 if __name__ == "__main__":
     cli()
