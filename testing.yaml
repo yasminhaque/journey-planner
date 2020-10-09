@@ -1,17 +1,7 @@
 version: '3'
+
 services:
-  journey-planner:
-    build: .
-    container_name: journey-planner
-    command: flask run --host 0.0.0.0
-    environment:
-      FLASK_ENV: ${FLASK_ENV}
-      FLASK_CONFIG: ${FLASK_CONFIG}
-    ports:
-      - "5000:5000"
-    volumes:
-      - ./:/app
-  database:
+  db:
     image: postgres
     environment:
       POSTGRES_DB: ${POSTGRES_DB}
