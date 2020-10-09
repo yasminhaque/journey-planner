@@ -26,5 +26,9 @@
   {
     "name": "POSTGRES_PASSWORD",
     "value": "postgres"
+  },
+  {
+    "name": "APPLICATION_DB",
+    "value": "application"
   }
 ]
