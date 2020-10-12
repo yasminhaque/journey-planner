@@ -1,17 +1,19 @@
 from app.models import User
+import json
 
 
-def test_create_user(database):
-    email = "john.smith@gmail.com"
-    user = User(
-        first_name="John",
-        last_name="Smith",
-        username="john.smith",
-        email="john.smith@gmail.com"
+def test_signup(app, database):
+    db = database
+    response = app.test_client().post(
+        "/signup",
+        json={
+            'first_name': 'John',
+            'last_name': 'Smith',
+            'username': 'john.smith',
+            'email': 'john.smith@gmail.com',
+            'password': 'password'
+        }
     )
-    database.session.add(user)
-    database.session.commit()
-
-    user = User.query.first()
-
-    assert user.email == email
+    data = json.loads(response.get_data(as_text=True))
+    assert data["id"] == str(User.query.filter_by(id=1).first().to_dict()["id"])
+    assert response.status_code == 200
