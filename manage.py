@@ -140,9 +140,6 @@ def create_initial_db():
 @cli.command()
 @click.argument("filenames", nargs=-1)
 def test(filenames):
-    logger.debug(
-        "HIIIIIII"
-    )
     os.environ["APPLICATION_CONFIG"] = "testing"
     configure_app(os.getenv("APPLICATION_CONFIG"))
 
