@@ -1,7 +1,11 @@
 from flask import Blueprint, request
-from app.models import db, User
+from app.models import User
+from app.schema import UserSchema
+from marshmallow import ValidationError
 
-auth = Blueprint('test_auth', __name__)
+user_schema = UserSchema()
+
+auth = Blueprint('unit', __name__)
 
 
 @auth.route('/login')
@@ -11,10 +15,19 @@ def login():
 
 @auth.route('/signup', methods=['POST'])
 def signup():
-    body = request.get_json()
-    user = User(**body)
-    user.save()
-    return {'id': str(user.id)}, 200
+    try:
+        user = user_schema.load(request.json)
+    except ValidationError as error:
+        return error.messages, 422
+
+    if user is None:
+        return {"message": "No input data provided or input data provided not in the correct json format"}, 400
+
+    if User.query.filter_by(email=user.email).first():
+        return {"message": "User already exists with this email"}
+    else:
+        user.save()
+        return {"message": "Created new user.", "id": str(user.id)}, 201
 
 
 @auth.route('/logout')
