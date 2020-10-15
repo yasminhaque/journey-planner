@@ -2,6 +2,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_bcrypt import generate_password_hash, check_password_hash
 from sqlalchemy.ext.hybrid import hybrid_property, hybrid_method
+from typing import Dict
 
 db = SQLAlchemy()
 migrate = Migrate()
@@ -16,7 +17,7 @@ class User(db.Model):
     username = db.Column(db.String, nullable=False)
     _password = db.Column("password", db.String, nullable=False)
 
-    def __init__(self, first_name, last_name, email, username, plaintext_password):
+    def __init__(self, first_name: str, last_name: str, email: str, username:str, plaintext_password: str):
         self.first_name = first_name
         self.last_name = last_name
         self.email = email
@@ -24,7 +25,7 @@ class User(db.Model):
         self.password = plaintext_password
 
     @property
-    def to_dict(self):
+    def to_dict(self) -> Dict:
         return {
             "id": self.id,
             "first_name": self.first_name,
@@ -34,15 +35,15 @@ class User(db.Model):
         }
 
     @hybrid_property
-    def password(self):
+    def password(self) -> str:
         return self._password
 
     @password.setter
-    def password(self, plaintext_password):
+    def password(self, plaintext_password: str):
         self._password = generate_password_hash(plaintext_password).decode('utf8')
 
     @hybrid_method
-    def check_password(self, plaintext_password):
+    def check_password(self, plaintext_password: str) -> bool:
         return check_password_hash(self._password, plaintext_password)
 
     def save(self):
