@@ -16,13 +16,15 @@ class User(db.Model):
     email = db.Column(db.String, unique=True, nullable=False)
     username = db.Column(db.String, nullable=False)
     _password = db.Column("password", db.String, nullable=False)
+    authenticated = db.Column(db.Boolean, default=False)
 
-    def __init__(self, first_name: str, last_name: str, email: str, username:str, plaintext_password: str):
+    def __init__(self, first_name: str, last_name: str, email: str, username: str, plaintext_password: str):
         self.first_name = first_name
         self.last_name = last_name
         self.email = email
         self.username = username
         self.password = plaintext_password
+        self.authenticated = False
 
     @property
     def to_dict(self) -> Dict:
@@ -45,6 +47,10 @@ class User(db.Model):
     @hybrid_method
     def check_password(self, plaintext_password: str) -> bool:
         return check_password_hash(self._password, plaintext_password)
+
+    @property
+    def is_authenticated(self):
+        return self.authenticated
 
     def save(self):
         db.session.add(self)

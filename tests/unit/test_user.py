@@ -23,7 +23,7 @@ def test_invalid_keys(user_schema):
         })
 
 
-def test_password_length(user_schema, new_user):
-    user = new_user["plaintext_password"] = "reallyreallyreallylongpassword"
+def test_password_length(user_schema, new_user_register):
+    user = new_user_register["plaintext_password"] = "reallyreallyreallylongpassword"
     with pytest.raises(ValidationError):
         user_schema.load(user)

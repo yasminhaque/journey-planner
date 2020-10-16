@@ -1,20 +1,20 @@
 from flask import Blueprint, request
 from app.models import User
-from app.schema import UserSchema
+from app.schema import UserRegisterSchema
 from marshmallow import ValidationError
 
-user_schema = UserSchema()
+user_schema = UserRegisterSchema()
 
 auth = Blueprint('unit', __name__)
 
 
 @auth.route('/login')
 def login():
-    return 'Login'
+    return "login"
 
 
-@auth.route('/signup', methods=['POST'])
-def signup():
+@auth.route('/register', methods=['POST'])
+def register():
     try:
         user = user_schema.load(request.json)
     except ValidationError as error:

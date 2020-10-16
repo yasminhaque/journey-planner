@@ -5,7 +5,7 @@ from marshmallow.fields import Str, Email
 from typing import Dict
 
 
-class UserSchema(Schema):
+class UserRegisterSchema(Schema):
     first_name = Str(required=True, validate=Length(min=1))
     last_name = Str(required=True, validate=Length(min=1))
     email = Email(required=True, validate=Length(min=1))

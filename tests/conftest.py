@@ -2,7 +2,7 @@ import pytest
 
 from app.app import create_app
 from app.models import db, User
-from app.schema import UserSchema
+from app.schema import UserRegisterSchema
 
 
 @pytest.fixture
@@ -37,7 +37,7 @@ def new_user_model():
 
 
 @pytest.fixture
-def new_user():
+def new_user_register():
     return {
         "first_name": "John",
         "last_name": "Smith",
@@ -48,5 +48,13 @@ def new_user():
 
 
 @pytest.fixture
+def new_user_login():
+    return {
+        "username": "john.smith",
+        "plaintext_password": "password123"
+    }
+
+
+@pytest.fixture
 def user_schema():
-    return UserSchema()
+    return UserRegisterSchema()
