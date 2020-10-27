@@ -14,8 +14,6 @@ def create_app(config_name: str):
     migrate.init_app(app, db)
 
     from app.auth import auth
-    from app.home import home
     app.register_blueprint(auth)
-    app.register_blueprint(home)
 
     return app
